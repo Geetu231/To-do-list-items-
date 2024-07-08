@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/editTextTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter task"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/buttonAddTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Task"
+        android:onClick="addTask" />
+
+    <ListView
+        android:id="@+id/listViewTasks"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText editTextTask;
+    private ListView listViewTasks;
+    private ArrayList<String> taskList;
+    private ArrayAdapter<String> taskAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editTextTask = findViewById(R.id.editTextTask);
+        listViewTasks = findViewById(R.id.listViewTasks);
+        taskList = new ArrayList<>();
+        taskAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, taskList);
+        listViewTasks.setAdapter(taskAdapter);
+    }
+
+    public void addTask(View view) {
+        String task = editTextTask.getText().toString().trim();
+        if (!task.isEmpty()) {
+            taskList.add(task);
+            taskAdapter.notifyDataSetChanged();
+            editTextTask.getText().clear();
+        }
+    }
+}
